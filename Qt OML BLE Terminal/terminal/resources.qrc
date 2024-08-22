@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>res/omllogo.jpg</file>
+        <file>res/dfuscreen.jpg</file>
+    </qresource>
+</RCC>
