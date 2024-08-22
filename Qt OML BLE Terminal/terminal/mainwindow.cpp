@@ -535,15 +535,18 @@ void MainWindow::on_pushButton_12_clicked()
 {
     QString buildDate = __DATE__;
     QString buildTime = __TIME__;
+    QString gitCommitHash = QString(GIT_COMMIT_HASH);
 
 
     QString messageText = QString("Software Name: OML BLE Terminal App (WiP)\nVersion: 0.0.2\n"
                                   "Built on: Qt5.12.12 (MSVC 2017, 64 bit) \n\n"
                                   "Copyright Odstock Medical Ltd. All rights reserved.\n\n"
-                                  "Built on: %1, %2\n")
+                                  "Built on: %1, %2\n"
+                                  "From Git Commit: %3\n")
 
-                                  .arg(buildDate)
-                                  .arg(buildTime);
+            .arg(buildDate)
+            .arg(buildTime)
+            .arg(gitCommitHash);
 
     QMessageBox msgBox;
     msgBox.setWindowTitle("About");
