@@ -34,6 +34,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->textEdit->setReadOnly(false);
     ui->lineEdit->setPlaceholderText("Enter text to transmit");
     ui->lineEdit_2->setPlaceholderText("Enter Node ID to connect");
+    ui->pushButton_2->setText("Connect");
 
     m_checkComPortsTimer = new QTimer(this);
     connect(m_checkComPortsTimer, &QTimer::timeout, this, &MainWindow::checkComPorts);
@@ -169,7 +170,7 @@ bool MainWindow::OMLInterface_Wake()
 
 void MainWindow::on_pushButton_2_clicked()
 {
-    bool portOpen = false;
+ /*   bool portOpen = false;
 
     if (!ui->comboBox->currentText().isEmpty())
     {
@@ -205,7 +206,47 @@ void MainWindow::on_pushButton_2_clicked()
     BLEModule_Init();
 
     OMLInterface_Purge();
-    OMLInterface_Process();
+    OMLInterface_Process(); */
+
+    if (m_isConnected)
+        {
+            // Disconnect
+            OMLInterface_Close();
+            ui->textEdit->setText("COM Port: " + ui->comboBox->currentText() + " Closed OK\n");
+            ui->statusbar->showMessage("Disconnected from Port " + ui->comboBox->currentText());
+            ui->pushButton_2->setText("Connect");
+            m_isConnected = false;
+        }
+        else
+        {
+            // Connect
+            bool portOpen = false;
+
+            if (!ui->comboBox->currentText().isEmpty())
+            {
+                uint8_t port = ui->comboBox->currentText().toUInt();
+                portOpen = OMLInterface_Open(port);
+            }
+
+            if (portOpen)
+            {
+                ui->textEdit->setText("COM Port: " + ui->comboBox->currentText() + " Opened OK\n");
+                ui->statusbar->showMessage("Connected to Port " + ui->comboBox->currentText());
+                ui->pushButton_2->setText("Disconnect");
+                m_isConnected = true;
+            }
+            else
+            {
+                ui->textEdit->setText("Failed to Open " + ui->comboBox->currentText() + "\n");
+                ui->statusbar->showMessage("Failed to Open " + ui->comboBox->currentText());
+            }
+
+            TIMER_Init();
+            BLEModule_Init();
+
+            OMLInterface_Purge();
+            OMLInterface_Process();
+        }
 
 
 }

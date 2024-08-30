@@ -76,6 +76,7 @@ private:
     QStringList m_currentComPorts;
 //    uint32_t baud = 1000000;
     TerminalCommands commands;
+     bool m_isConnected = false;
 
     typedef std::function<void()> CommandFunction;
     QMap<QString, CommandFunction> commandMap;
