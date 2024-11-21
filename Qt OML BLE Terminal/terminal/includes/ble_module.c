@@ -58,16 +58,6 @@
 //        emitDebugResponse(buffer); \
 //    } while(0)
 
-#define DBG(...) \
-    do { \
-        char buffer[256]; \
-        int ret = snprintf(buffer, sizeof(buffer), __VA_ARGS__); \
-        if (ret >= 0 && ret < sizeof(buffer)) { \
-            emitDebugMain(buffer); \
-        } else { \
-            emitDebugMain("Buffer overflow in DBG_Evt"); \
-        } \
-    } while(0)
 
 #define DBG_Evt(...) \
     do { \
@@ -79,6 +69,17 @@
             emitDebugEvent("Buffer overflow in DBG_Evt"); \
         } \
     } while(0)
+#define DBG(...) \
+    do { \
+        char buffer[256]; \
+        int ret = snprintf(buffer, sizeof(buffer), __VA_ARGS__); \
+        if (ret >= 0 && ret < sizeof(buffer)) { \
+            emitDebugMain(buffer); \
+        } else { \
+            emitDebugMain("Buffer overflow in DBG_Evt"); \
+        } \
+    } while(0)
+
 
 #define DBG_Rsp(status, ...) \
     do { \

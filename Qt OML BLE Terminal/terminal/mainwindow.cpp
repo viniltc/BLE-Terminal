@@ -48,6 +48,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(&DebugSignals::instance(), &DebugSignals::debugEvent, this, &MainWindow::handleDebugEvent);
     connect(&DebugSignals::instance(), &DebugSignals::debugResponse, this, &MainWindow::handleDebugResponse);
     connect(&DebugSignals::instance(), &DebugSignals::debugHex, this, &MainWindow::handleDebugResponse);
+    //connect(&DebugSignals::instance(), &DebugSignals::debugMain, this, &MainWindow::handleDebugEvent);
 
 
 
@@ -397,6 +398,18 @@ void MainWindow::on_sendCommandButton()
 void MainWindow::handleDebugEvent(const QString &message)
 {
 
+    ui->textEdit->setReadOnly(false);
+    QTextCursor cursor(ui->textEdit->textCursor());
+    cursor.movePosition(QTextCursor::End);
+    cursor.insertBlock();
+
+    QTextCharFormat format;
+    format.setForeground(QBrush(QColor("blue")));
+
+    cursor.setCharFormat(format);
+    cursor.insertText("Event: " + message);
+
+    ui->textEdit->setTextCursor(cursor);
 
      QRegularExpression nodeIdRegex("NodeId:(\\d+)");
      QRegularExpression nodeTypeRegex("NodeType:(\\d+)");
@@ -424,18 +437,7 @@ void MainWindow::handleDebugEvent(const QString &message)
              ui->comboBoxNodeType->addItem(nodeType);
          }
 
-    ui->textEdit->setReadOnly(false);
-    QTextCursor cursor(ui->textEdit->textCursor());
-    cursor.movePosition(QTextCursor::End);
-    cursor.insertBlock();
 
-    QTextCharFormat format;
-    format.setForeground(QBrush(QColor("blue")));
-
-    cursor.setCharFormat(format);
-    cursor.insertText("Event: " + message);
-
-    ui->textEdit->setTextCursor(cursor);
 }
 
 void MainWindow::handleDebugResponse(const QString &message)
